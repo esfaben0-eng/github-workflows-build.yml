@@ -11,6 +11,11 @@ jobs:
         with:
           flutter-version: '3.29.0'
           channel: 'stable'
+      - name: Patch Dependencies
+        run: |
+          if [ -f pubspec.yaml ]; then
+            sed -i 's/sdk: .*/sdk: ">=3.0.0 <4.0.0"/g' pubspec.yaml
+          fi
       - run: flutter pub get
       - run: flutter build apk --debug
       - uses: actions/upload-artifact@v4
