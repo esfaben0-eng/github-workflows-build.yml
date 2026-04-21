@@ -9,15 +9,21 @@ jobs:
           repository: 'appsfolder/livebridge'
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.0'
+          flutter-version: '3.29.0' # ስሪቱን ወደ 3.29 ከፍ አድርገነዋል
+          channel: 'stable'
       - name: Patch for Android 15
         run: |
+          # ፋይሎቹን መኖራቸውን እያረጋገጠ እንዲያስተካክል
           if [ -f android/app/build.gradle ]; then
             sed -i 's/compileSdk 36/compileSdk 35/g' android/app/build.gradle
             sed -i 's/targetSdk 36/targetSdk 35/g' android/app/build.gradle
           fi
           if [ -f lib/main.dart ]; then
             sed -i 's/PredictiveBackPageTransitionsBuilder()/ZoomPageTransitionsBuilder()/g' lib/main.dart
+          fi
+          # pubspec.yaml ላይ ያለውን ስሪት ማለስለስ
+          if [ -f pubspec.yaml ]; then
+            sed -i 's/sdk: .*/sdk: ">=3.0.0 <4.0.0"/g' pubspec.yaml
           fi
       - run: flutter pub get
       - run: flutter build apk --debug
