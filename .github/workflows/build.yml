@@ -15,6 +15,18 @@ jobs:
           channel: 'stable'
           flutter-version: '3.41.7'
 
+      - name: Patch for Android 15
+        run: |
+          # Set SDK to Android 15 (API 35)
+          if [ -f android/app/build.gradle ]; then
+            sed -i 's/compileSdk .*/compileSdk 35/g' android/app/build.gradle
+            sed -i 's/targetSdk .*/targetSdk 35/g' android/app/build.gradle
+          fi
+          # Fix transitions for Android 15 stability
+          if [ -f lib/main.dart ]; then
+            sed -i 's/PredictiveBackPageTransitionsBuilder()/ZoomPageTransitionsBuilder()/g' lib/main.dart
+          fi
+
       - name: Install Dependencies
         run: flutter pub get
 
