@@ -13,13 +13,16 @@ jobs:
           channel: 'stable'
       - name: Patch Files
         run: |
+          # Fix Android SDK versions
           if [ -f android/app/build.gradle ]; then
             sed -i 's/compileSdk 36/compileSdk 35/g' android/app/build.gradle
             sed -i 's/targetSdk 36/targetSdk 35/g' android/app/build.gradle
           fi
+          # Fix Page Transitions
           if [ -f lib/main.dart ]; then
             sed -i 's/PredictiveBackPageTransitionsBuilder()/ZoomPageTransitionsBuilder()/g' lib/main.dart
           fi
+          # Carefully fix Dart SDK version without breaking other lines
           if [ -f pubspec.yaml ]; then
             sed -i 's/sdk: .*/sdk: ">=3.0.0 <4.0.0"/g' pubspec.yaml
           fi
