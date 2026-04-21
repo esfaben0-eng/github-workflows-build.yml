@@ -13,7 +13,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '3.29.0' # This provides the required Dart 3.9.x
+          flutter-version: '3.41.7'
 
       - name: Install Dependencies
         run: flutter pub get
